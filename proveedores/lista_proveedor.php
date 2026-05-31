@@ -29,98 +29,96 @@ $proveedores = $stmt->fetchAll();
   <title>Proveedores — Tienda App</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="pagina-interior">
 
 <?php include '../includes/navbar.php'; ?>
 
-<div class="main-content">
+<div class="app-layout">
+  <main class="content">
 
-  <div class="page-header">
-    <div>
-      <h1 class="page-title">
-        <span class="title-icon" style="background:#D1FAE5;">🚚</span>
-        Proveedores
-      </h1>
-      <p class="page-subtitle"><?= count($proveedores) ?> proveedor(es) registrado(s)</p>
+    <div class="content-header">
+      <div>
+        <h1 class="content-title">Proveedores</h1>
+        <p class="content-subtitle"><?= count($proveedores) ?> proveedor(es) registrado(s)</p>
+      </div>
+      <a href="nuevo_proveedor.php" class="btn">Nuevo Proveedor</a>
     </div>
-    <a href="nuevo_proveedor.php" class="btn btn-success">➕ Nuevo Proveedor</a>
-  </div>
 
-  <?php if (isset($_GET['msg'])): ?>
-    <div class="alert alert-success">✅ <?= htmlspecialchars($_GET['msg']) ?></div>
-  <?php endif; ?>
+    <?php if (isset($_GET['msg'])): ?>
+      <p class="msg-exito"><?= htmlspecialchars($_GET['msg']) ?></p>
+    <?php endif; ?>
 
-  <!-- Buscador -->
-  <form method="GET" class="search-bar">
-    <div class="search-input">
-      <span class="search-icon">🔍</span>
-      <input type="text" name="buscar" placeholder="Buscar por nombre o ciudad..."
-             value="<?= htmlspecialchars($busqueda) ?>">
-    </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-    <a href="listar_proveedores.php" class="btn btn-outline">Limpiar</a>
-  </form>
+    <form method="GET" class="barra-busqueda">
+      <div class="input-busqueda">
+        <input type="text" name="buscar" placeholder="Buscar por nombre o ciudad..."
+               value="<?= htmlspecialchars($busqueda) ?>">
+      </div>
+      <button type="submit" class="btn">Buscar</button>
+      <a href="lista_proveedor.php" class="btn btn-contorno">Limpiar</a>
+    </form>
 
-  <?php if (empty($proveedores)): ?>
-    <div class="card">
-      <div class="card-body">
-        <div class="empty-state">
-          <div class="empty-icon">🚚</div>
-          <p>No hay proveedores registrados.</p>
-          <a href="nuevo_proveedor.php" class="btn btn-success">Agregar proveedor</a>
+    <?php if (empty($proveedores)): ?>
+      <div class="card">
+        <div class="card-body">
+          <div class="estado-vacio">
+            <span class="icono-vacio">—</span>
+            <p>No hay proveedores registrados.</p>
+            <a href="nuevo_proveedor.php" class="btn">Agregar proveedor</a>
+          </div>
         </div>
       </div>
-    </div>
-  <?php else: ?>
-    <div class="card">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Teléfono</th>
-              <th>Ciudad</th>
-              <th>Productos que suministra</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($proveedores as $p): ?>
-            <tr>
-              <td><?= $p['id_proveedor'] ?></td>
-              <td>
-                <strong><?= htmlspecialchars($p['nombre']) ?></strong>
-              </td>
-              <td>📞 <?= htmlspecialchars($p['telefono']) ?></td>
-              <td>📍 <?= htmlspecialchars($p['ciudad']) ?></td>
-              <td>
-                <?php if ($p['total_productos'] > 0): ?>
-                  <span class="badge badge-drogueria"><?= $p['total_productos'] ?> producto(s)</span>
-                  <br><small style="color:var(--text-muted);font-size:0.78rem;"><?= htmlspecialchars($p['productos_suministra'] ?? '') ?></small>
-                <?php else: ?>
-                  <span class="badge badge-secondary">Sin asignar</span>
-                <?php endif; ?>
-              </td>
-              <td>
-                <div class="actions">
-                  <a href="editar_proveedor.php?id=<?= $p['id_proveedor'] ?>"
-                     class="btn btn-sm btn-warning">✏️ Editar</a>
-                  <a href="eliminar_proveedor.php?id=<?= $p['id_proveedor'] ?>"
-                     class="btn btn-sm btn-danger"
-                     onclick="return confirm('¿Eliminar este proveedor?')">🗑️</a>
-                </div>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+    <?php else: ?>
+      <div class="card">
+        <div class="tabla-wrapper">
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Ciudad</th>
+                <th>Productos que suministra</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($proveedores as $p): ?>
+              <tr>
+                <td><?= $p['id_proveedor'] ?></td>
+                <td><strong><?= htmlspecialchars($p['nombre']) ?></strong></td>
+                <td><?= htmlspecialchars($p['telefono']) ?></td>
+                <td><?= htmlspecialchars($p['ciudad']) ?></td>
+                <td>
+                  <?php if ($p['total_productos'] > 0): ?>
+                    <span class="badge badge-drogueria"><?= $p['total_productos'] ?> producto(s)</span><br>
+                    <small><?= htmlspecialchars($p['productos_suministra'] ?? '') ?></small>
+                  <?php else: ?>
+                    <span class="badge badge-secundario">Sin asignar</span>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <div class="td-acciones">
+                    <a href="editar_proveedor.php?id=<?= $p['id_proveedor'] ?>"
+                       class="btn btn-sm btn-advertencia">Editar</a>
+                    <a href="eliminar_proveedor.php?id=<?= $p['id_proveedor'] ?>"
+                       class="btn btn-sm btn-peligro"
+                       onclick="return confirm('¿Eliminar este proveedor?')">Eliminar</a>
+                  </div>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  <?php endif; ?>
+    <?php endif; ?>
 
+    <a href="../index.php" class="btn-volver btn">Volver al menú</a>
+  </main>
 </div>
 
-<footer class="footer">Tienda App &copy; <?= date('Y') ?></footer>
+<footer class="footer">
+  <p>Tienda App </p>
+</footer>
 </body>
 </html>
