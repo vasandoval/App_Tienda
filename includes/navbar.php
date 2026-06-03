@@ -33,6 +33,22 @@ $base = ($carpeta !== 'App_Tienda-main' && $carpeta !== '.') ? '../' : '';
         </div>
       </div>
 
+      <div class="nav-item">
+        <span class="nav-link">Inventario</span>
+        <div class="dropdown">
+          <a href="<?= $base ?>inventario/inventario.php">Ver inventario</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <span class="nav-link">Reportes</span>
+        <div class="dropdown">
+          <a href="<?= $base ?>reportes/reportes.php">Resumen general</a>
+          <a href="<?= $base ?>reportes/clientes_reporte.php">Análisis de clientes</a>
+          <a href="<?= $base ?>reportes/ingresos_gastos.php">Ingresos vs Gastos</a>
+        </div>
+      </div>
+
     </nav>
   </header>
 </div>

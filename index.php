@@ -54,6 +54,30 @@
       <p>Registra y consulta la base de clientes</p>
     </a>
 
+    <a href="ventas/nueva_venta.php" class="tarjeta">
+      <div class="icono">
+        <img src="recursos/car.png">
+      </div>
+      <h3>Ventas</h3>
+      <p>Registra ventas y genera facturas</p>
+    </a>
+
+    <a href="inventario/inventario.php" class="tarjeta">
+      <div class="icono">
+        <img src="recursos/inven.png">
+      </div>
+      <h3>Inventario</h3>
+      <p>Control de stock y alertas de mínimos</p>
+    </a>
+
+    <a href="reportes/reportes.php" class="tarjeta">
+      <div class="icono">
+        <img src="recursos/repor.png">
+      </div>
+      <h3>Reportes</h3>
+      <p>Ingresos, gastos y análisis de clientes</p>
+    </a>
+
   </div>
 </main>
 
@@ -63,3 +87,4 @@
 
 </body>
 </html>
+
