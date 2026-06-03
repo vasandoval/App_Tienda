@@ -1,19 +1,11 @@
--- ============================================================
--- TIENDA APP — Script completo de base de datos
--- Base de datos: app_tienda
--- Motor: MySQL 8.0
--- Ejecutar en phpMyAdmin o CMD de MySQL
--- ============================================================
-
 DROP DATABASE IF EXISTS app_tienda;
 CREATE DATABASE app_tienda CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 USE app_tienda;
 
--- ============================================================
--- TABLAS
--- ============================================================
 
--- Categorías (tu compañera usa "categorias" y columna "tipo" en empaques)
+-- TABLAS ------------------------
+
+-- Categorías 
 CREATE TABLE categorias (
     id_categoria  INT AUTO_INCREMENT PRIMARY KEY,
     nombre        VARCHAR(50)   NOT NULL UNIQUE,
@@ -22,13 +14,13 @@ CREATE TABLE categorias (
     -- impuesto guarda el porcentaje: 7, 3, 5 ó 0
 );
 
--- Tipos de empaque (tu compañera usa columna "tipo")
+-- Tipos de empaque 
 CREATE TABLE empaques (
     id_empaque  INT AUTO_INCREMENT PRIMARY KEY,
     tipo        VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Productos (tu compañera usa "cantidad_almacenada" y "precio_unitario")
+-- Productos 
 CREATE TABLE productos (
     id_producto         INT AUTO_INCREMENT PRIMARY KEY,
     codigo              VARCHAR(10)   NOT NULL UNIQUE,
@@ -42,7 +34,7 @@ CREATE TABLE productos (
     CONSTRAINT fk_prod_emp FOREIGN KEY (id_empaque)   REFERENCES empaques(id_empaque)
 );
 
--- Clientes (tu compañera usa "clientes")
+-- Clientes 
 CREATE TABLE clientes (
     cedula    VARCHAR(15)  PRIMARY KEY,
     nombre    VARCHAR(60)  NOT NULL,
@@ -51,7 +43,7 @@ CREATE TABLE clientes (
     correo    VARCHAR(100) NOT NULL
 );
 
--- Proveedores (tu compañera usa "proveedores")
+-- Proveedores
 CREATE TABLE proveedores (
     id_proveedor  INT AUTO_INCREMENT PRIMARY KEY,
     nombre        VARCHAR(100) NOT NULL,
@@ -59,7 +51,7 @@ CREATE TABLE proveedores (
     ciudad        VARCHAR(80)  NOT NULL
 );
 
--- Relación N:M proveedor <-> producto (mismo nombre que usa tu compañera)
+-- Relación N:M proveedor <-> producto
 CREATE TABLE proveedor_producto (
     id_proveedor  INT NOT NULL,
     id_producto   INT NOT NULL,
@@ -68,7 +60,7 @@ CREATE TABLE proveedor_producto (
     CONSTRAINT fk_pp_prod FOREIGN KEY (id_producto)  REFERENCES productos(id_producto)
 );
 
--- Ventas — cabecera de cada factura (tu compañera ya referencia "ventas")
+-- Ventas — cabecera de cada factura 
 CREATE TABLE ventas (
     id_venta        INT AUTO_INCREMENT PRIMARY KEY,
     cedula_cliente  VARCHAR(15)   NOT NULL,
@@ -107,9 +99,8 @@ CREATE TABLE compras_proveedor (
     CONSTRAINT fk_cp_prod FOREIGN KEY (id_producto)  REFERENCES productos(id_producto)
 );
 
--- ============================================================
--- DATOS INICIALES
--- ============================================================
+
+-- DATOS INICIALES-------------------------------------
 
 -- Categorías con IVA
 INSERT INTO categorias (nombre, descripcion, impuesto) VALUES
@@ -180,9 +171,8 @@ INSERT INTO proveedor_producto VALUES
 (4,16),(4,17),(4,19),
 (5,4),(5,5),(5,8);
 
--- ============================================================
--- VENTAS DE EJEMPLO (para que los reportes ya tengan datos)
--- ============================================================
+
+-- VENTAS DE EJEMPLO --------------------------------------------
 
 -- Valentina García — compra 1
 INSERT INTO ventas (cedula_cliente, subtotal, total_iva, total)
@@ -240,9 +230,8 @@ INSERT INTO compras_proveedor (id_proveedor, id_producto, cantidad, precio_unita
 (4, 17, 20, 6500.00, 130000.00),
 (5,  4, 25, 4800.00, 120000.00);
 
--- ============================================================
--- VISTAS (simplifican las consultas de reportes)
--- ============================================================
+
+-- VISTAS ----------------------------------------------------
 
 -- Vista: productos con stock bajo el mínimo (5)
 CREATE VIEW v_stock_bajo AS
@@ -254,7 +243,7 @@ FROM productos p
 JOIN categorias c ON p.id_categoria = c.id_categoria
 WHERE p.cantidad_almacenada < 5;
 
--- Vista: resumen de compras por cliente (la usan clientes y reportes)
+-- Vista: resumen de compras por cliente 
 CREATE VIEW v_resumen_clientes AS
 SELECT cl.cedula, cl.nombre, cl.apellido, cl.telefono, cl.correo,
        COUNT(v.id_venta)            AS num_compras,
